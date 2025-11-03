@@ -1,4 +1,4 @@
-JavaScript: document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const STORAGE_KEY = "prompts_storage_v1"
 
   const state = {
@@ -7,7 +7,6 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
   }
 
   const elements = {
-    app: document.querySelector(".app"),
     promptTitle: document.getElementById("prompt-title"),
     promptContent: document.getElementById("prompt-content"),
     titleWrapper: document.getElementById("title-wrapper"),
@@ -37,14 +36,12 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
     searchInput,
   } = elements
 
+  // --- Funções Utilitárias de Armazenamento ---
   function saveStateToStorage() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
     } catch (error) {
       console.error("Erro ao salvar no localStorage:", error)
-      alert(
-        "Não foi possível salvar os prompts. O armazenamento pode estar cheio."
-      )
     }
   }
 
@@ -73,7 +70,6 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initializeDefaultState() {
-    console.log("Inicializando com prompts padrão.")
     const now = Date.now()
     state.prompts = [
       {
@@ -110,6 +106,7 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
     saveStateToStorage()
   }
 
+  // --- Lógica do Placeholder ---
   function updateEditableWrapperState(element, wrapper) {
     if (!element || !wrapper) return
     const hasVisibleContent = element.textContent.trim().length > 0
@@ -119,31 +116,33 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
     wrapper.classList.toggle("is-empty", isEmpty)
   }
 
-  function attachEditableHandlers() {
-    if (promptTitle) {
-      promptTitle.addEventListener("input", () =>
-        updateEditableWrapperState(promptTitle, titleWrapper)
-      )
-    }
-    if (promptContent) {
-      promptContent.addEventListener("input", () =>
-        updateEditableWrapperState(promptContent, contentWrapper)
-      )
-    }
-  }
-
+  // --- Lógica da Sidebar ---
   function toggleSidebar() {
-    if (!sidebar || !btnOpen || !btnCollapse) return
-    const willCollapse = !sidebar.classList.contains("is-collapsed")
+    if (!sidebar || !btnOpen) return
 
-    sidebar.classList.toggle("is-collapsed", willCollapse)
-    btnOpen.style.display = willCollapse ? "flex" : "none"
+    const isCollapsed = sidebar.classList.contains("is-collapsed")
+
+    // Lógica Invertida: Se estiver 'collapsed', queremos que ABRA (remova 'is-collapsed')
+    // Se NÃO estiver 'collapsed', queremos que FECHE (adicione 'is-collapsed')
+    sidebar.classList.toggle("is-collapsed", !isCollapsed)
+
+    // O open-toggle só deve aparecer quando a sidebar está FECHADA/COLAPSED
+    btnOpen.style.display = isCollapsed ? "none" : "flex"
+
+    // Atualiza o display do open-toggle após a transição da sidebar
+    setTimeout(() => {
+      btnOpen.style.display = sidebar.classList.contains("is-collapsed")
+        ? "flex"
+        : "none"
+    }, 300) // 300ms é a duração da transição no CSS
   }
 
+  // --- Gerenciamento de Prompts ---
   function renderPromptList(promptsToRender = state.prompts) {
     if (!promptList) return
     promptList.innerHTML = ""
 
+    // Ordenação: Ordena os prompts pelo campo 'updatedAt' (mais recente primeiro)
     const sortedPrompts = [...promptsToRender].sort(
       (a, b) => b.updatedAt - a.updatedAt
     )
@@ -180,7 +179,7 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
       contentDiv.appendChild(descSpan)
 
       const removeButton = document.createElement("button")
-      removeButton.className = "btn-icon"
+      removeButton.className = "btn-icon delete-btn" // Adiciona uma classe específica
       removeButton.title = "Remover"
       removeButton.innerHTML = `<img src="assets/remove.svg" alt="Remover" class="icon icon-trash" />`
 
@@ -205,8 +204,6 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
       updateEditableWrapperState(promptContent, contentWrapper)
     } else if (promptId === null) {
       clearEditor()
-    } else {
-      console.warn(`Prompt com ID ${promptId} não encontrado.`)
     }
   }
 
@@ -226,6 +223,7 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
     let promptToUpdate = state.prompts.find((p) => p.id === state.selectedId)
 
     if (promptToUpdate) {
+      // PROMPT EXISTENTE: Atualiza e move para o topo
       const index = state.prompts.findIndex((p) => p.id === state.selectedId)
       if (index > -1) {
         state.prompts.splice(index, 1)
@@ -238,6 +236,7 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
       state.prompts.unshift(promptToUpdate)
       state.selectedId = promptToUpdate.id
     } else {
+      // NOVO PROMPT: Cria e insere no topo
       const newPrompt = {
         id: crypto.randomUUID(),
         title,
@@ -268,7 +267,6 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
     updateEditableWrapperState(promptTitle, titleWrapper)
     updateEditableWrapperState(promptContent, contentWrapper)
     if (promptTitle) promptTitle.focus()
-    console.log("Editor limpo para novo prompt.")
   }
 
   function deletePrompt(promptId) {
@@ -282,9 +280,6 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
 
       saveStateToStorage()
       renderPromptList()
-      console.log(`Prompt ${promptId} removido!`)
-    } else {
-      console.warn(`Tentativa de deletar prompt não encontrado: ID ${promptId}`)
     }
   }
 
@@ -295,39 +290,6 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
       p.title.toLowerCase().includes(searchTerm)
     )
     renderPromptList(filteredPrompts)
-  }
-
-  function attachEventListeners() {
-    if (btnOpen) btnOpen.addEventListener("click", toggleSidebar)
-    if (btnCollapse) btnCollapse.addEventListener("click", toggleSidebar)
-    if (btnCopy) btnCopy.addEventListener("click", copyContent)
-    if (btnSave) btnSave.addEventListener("click", savePrompt)
-    if (btnNew) btnNew.addEventListener("click", clearEditor)
-    if (searchInput) searchInput.addEventListener("input", handleSearch)
-
-    if (promptList) {
-      promptList.addEventListener("click", (event) => {
-        const item = event.target.closest(".prompt-item")
-        const trashButton = event.target.closest(".btn-icon")
-
-        if (trashButton && item) {
-          const promptId = item.dataset.id
-          if (
-            promptId &&
-            confirm("Tem certeza que deseja remover este prompt?")
-          ) {
-            deletePrompt(promptId)
-          }
-        } else if (item) {
-          const promptId = item.dataset.id
-          if (promptId !== state.selectedId) {
-            loadPromptIntoEditor(promptId)
-          }
-        }
-      })
-    }
-
-    attachEditableHandlers()
   }
 
   async function copyContent() {
@@ -346,18 +308,60 @@ JavaScript: document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // --- Configuração dos Event Listeners ---
+  function attachEventListeners() {
+    if (btnOpen) btnOpen.addEventListener("click", toggleSidebar)
+    if (btnCollapse) btnCollapse.addEventListener("click", toggleSidebar)
+    if (btnCopy) btnCopy.addEventListener("click", copyContent)
+    if (btnSave) btnSave.addEventListener("click", savePrompt)
+    if (btnNew) btnNew.addEventListener("click", clearEditor)
+    if (searchInput) searchInput.addEventListener("input", handleSearch)
+
+    if (promptTitle) {
+      promptTitle.addEventListener("input", () =>
+        updateEditableWrapperState(promptTitle, titleWrapper)
+      )
+    }
+    if (promptContent) {
+      promptContent.addEventListener("input", () =>
+        updateEditableWrapperState(promptContent, contentWrapper)
+      )
+    }
+
+    if (promptList) {
+      promptList.addEventListener("click", (event) => {
+        const item = event.target.closest(".prompt-item")
+        const deleteBtn = event.target.closest(".delete-btn")
+
+        if (deleteBtn && item) {
+          const promptId = item.dataset.id
+          if (
+            promptId &&
+            confirm("Tem certeza que deseja remover este prompt?")
+          ) {
+            deletePrompt(promptId)
+          }
+        } else if (item) {
+          const promptId = item.dataset.id
+          if (promptId !== state.selectedId) {
+            loadPromptIntoEditor(promptId)
+          }
+        }
+      })
+    }
+  }
+
+  // --- Inicialização ---
   function init() {
     loadStateFromStorage()
+    attachEventListeners()
 
-    if (sidebar) sidebar.style.display = "flex"
+    // Estado inicial: Sidebar aberta no desktop, Editor limpo
+    if (sidebar) sidebar.classList.remove("is-collapsed")
     if (btnOpen) btnOpen.style.display = "none"
 
     renderPromptList()
-
     clearEditor()
-
-    updateEditableWrapperState(promptTitle, titleWrapper)
-    updateEditableWrapperState(promptContent, contentWrapper)
   }
 
   init()
