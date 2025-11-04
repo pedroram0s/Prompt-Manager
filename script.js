@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeToggle = document.querySelector(".close-toggle")
 
   // Elementos contenteditable (título e conteúdo)
-  const promptTitle = document.querySelector(".prompt-title")
-  const promptContent = document.querySelector(".prompt-content")
+  // Selecionando pelos IDs AGORA corretos
+  const promptTitle = document.getElementById("prompt-title")
+  const promptContent = document.getElementById("prompt-content")
 
   // === 2. Funções de Utilidade ===
 
@@ -39,30 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // === 3. Inicialização e Listeners da Sidebar ===
 
   if (openToggle && sidebar) {
-    // Função para abrir/fechar a sidebar
     const toggleSidebar = () => {
-      // A classe 'is-collapsed' esconde a sidebar (tanto no mobile quanto desktop)
       sidebar.classList.toggle("is-collapsed")
     }
 
-    // Event listener para o botão de abrir (visível no mobile/desktop colapsado)
     openToggle.addEventListener("click", toggleSidebar)
 
-    // Event listener para o botão de fechar (dentro da sidebar)
     if (closeToggle) {
       closeToggle.addEventListener("click", toggleSidebar)
-    }
-
-    // NOVO: Inicializa o estado da sidebar no carregamento da página
-    // No desktop, você pode querer que ela comece colapsada ou aberta.
-    // No mobile, ela deve começar colapsada, mas o CSS controla isso via `@media`.
-    // Por segurança, vamos garantir que a classe 'is-collapsed' seja removida/adicionada conforme necessário.
-
-    // Exemplo: Deixa aberta por padrão no desktop
-    if (window.innerWidth > 950) {
-      sidebar.classList.remove("is-collapsed")
-    } else {
-      sidebar.classList.add("is-collapsed")
     }
   }
 
@@ -83,4 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4.3. Adiciona um listener para o caso de o usuário focar e limpar o campo
     element.addEventListener("focusout", () => checkEmptyState(element))
   })
+
+  // (Adicione aqui o restante da sua lógica JS, como salvar, copiar e a lista de prompts)
 })

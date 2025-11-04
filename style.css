@@ -72,7 +72,7 @@ body {
 
 .sidebar.is-collapsed {
   transform: translateX(-100%);
-  position: absolute; /* Para desktop, tira do fluxo do documento */
+  position: absolute;
 }
 
 .sidebar-header {
@@ -241,7 +241,7 @@ body {
   justify-content: space-between;
   gap: 16px;
   width: 100%;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Impede quebra de linha no header principal */
 }
 
 .main-buttons {
@@ -251,15 +251,10 @@ body {
 }
 
 /* --- Editable & Placeholder (CORREÇÃO DE SOBREPOSIÇÃO) --- */
-.editable-wrapper {
-  position: relative;
-  flex-grow: 1;
-  min-width: 0;
-}
 
 .prompt-title,
 .prompt-content {
-  position: relative;
+  position: relative; /* ESSENCIAL para posicionamento do placeholder */
   outline: none;
   padding: 0;
   line-height: 1.2;
@@ -271,8 +266,10 @@ body {
   color: #fff;
   min-height: 40px;
   line-height: 1.2;
-  /* Garante que o texto comece após o ícone de relâmpago, se houver */
+  /* Espaçamento para o ícone de relâmpago no desktop */
   padding-left: 42px;
+  flex-grow: 1; /* Permite que o título ocupe o espaço restante */
+  min-width: 0; /* Permite o encolhimento correto em flex */
 }
 
 .prompt-content {
@@ -282,16 +279,11 @@ body {
   min-height: 32px;
 }
 
-.prompt-title[contenteditable="true"]:focus,
-.prompt-content[contenteditable="true"]:focus {
-  background: transparent;
-}
-
-/* Placeholder usando ::before nos elementos filhos */
+/* Placeholder usando ::before (agora no elemento de input) */
 .prompt-title::before,
 .prompt-content::before {
   content: attr(data-placeholder);
-  position: absolute;
+  position: absolute; /* POSICIONAMENTO ABSOLUTO PARA EVITAR SOBREPOSIÇÃO */
   top: 0;
   left: 0;
   color: var(--color-placeholder);
@@ -300,6 +292,7 @@ body {
   width: 100%;
 }
 
+/* Mostra o Placeholder se estiver VAZIO */
 .prompt-title.is-empty::before,
 .prompt-content.is-empty::before {
   opacity: 1;
@@ -309,8 +302,8 @@ body {
   font-size: 32px;
   font-weight: 600;
   line-height: 1.2;
-  left: 42px; /* Move o placeholder para começar após o espaço do ícone */
-  padding-right: 42px; /* Adiciona padding para não sobrepor */
+  left: 42px; /* Alinha o placeholder com o padding do título */
+  padding-right: 42px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -320,18 +313,12 @@ body {
   font-size: 16px;
   line-height: 1.6;
   font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-/* Ícone de Relâmpago ⚡ (quando há conteúdo) */
+/* Ícone de Relâmpago ⚡ (quando há conteúdo, apenas desktop) */
 .prompt-title:not(.is-empty)::before {
   content: "⚡";
-  margin-right: 10px;
-  display: inline-block;
-  font-weight: 400;
-  position: absolute; /* Usamos ABSOLUTE para não afetar o layout, mas mantendo-o visível */
+  position: absolute;
   left: 0;
   top: 0;
   opacity: 1;
@@ -446,7 +433,7 @@ body {
     display: none;
   }
 
-  /* MAIN: Ajusta o padding para que o conteúdo não fique muito espremido */
+  /* MAIN: Ajusta o padding */
   .main {
     padding-left: 32px;
     padding-right: 32px;
@@ -458,7 +445,7 @@ body {
     max-width: 100%;
   }
 
-  /* CORREÇÃO DE PLACEHOLDER EM TELAS MENORES */
+  /* CORREÇÃO MOBILE: Remove o ícone e padding */
   .prompt-title {
     padding-left: 0; /* Remove padding extra no mobile */
     min-height: 38px;
@@ -467,8 +454,6 @@ body {
   .prompt-title.is-empty::before {
     left: 0; /* Alinha o placeholder com a borda */
     padding-right: 0;
-    font-size: 32px;
-    line-height: 1.2;
   }
 
   .prompt-title:not(.is-empty)::before {

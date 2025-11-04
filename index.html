@@ -1,89 +1,116 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+   
   <head>
+       
     <meta charset="UTF-8" />
+       
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+       
     <link rel="stylesheet" href="style.css" />
 
+       
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
+       
     <title>Prompts</title>
+     
   </head>
+   
   <body>
+       
     <div class="app">
+           
       <button class="icon-button open-toggle" id="btn-open">
-        <img src="assets/open.svg" alt="Abrir Menu" class="icon" />
+                <img src="assets/open.svg" alt="Abrir Menu" class="icon" />    
+         
       </button>
 
-      <aside class="sidebar">
+           
+      <aside class="sidebar is-collapsed">
+               
         <header class="sidebar-header">
-          <img src="assets/logo.svg" alt="logo" class="logo" />
+                    <img src="assets/logo.svg" alt="logo" class="logo" />
 
+                   
           <button class="icon-button close-toggle" id="btn-collapse">
-            <img src="assets/collapse.svg" alt="Fechar menu" class="icon" />
+                       
+            <img src="assets/collapse.svg" alt="Fechar menu" class="icon" />    
+                 
           </button>
+                 
         </header>
 
+               
         <div class="sidebar-content">
+                   
           <div class="search-container">
+                       
             <input
               type="text"
               class="search-input"
               id="search-input"
               placeholder="Buscar"
             />
+                     
           </div>
-          <button class="btn-new-prompt" id="btn-new">Novo Prompt</button>
+                   
+          <button class="btn-new-prompt" id="btn-new">Novo Prompt</button>      
+             
           <div class="search-divider"></div>
 
+                   
           <ul class="prompt-list" id="prompt-list"></ul>
+                 
         </div>
+             
       </aside>
 
+           
       <main class="main">
+               
         <div class="main-content-wrapper">
+                   
           <div class="main-header">
-            <div
+            <h1
+              id="prompt-title"
+              class="prompt-title is-empty"
+              contenteditable="true"
               data-placeholder="Título do prompt"
-              class="editable-wrapper is-empty"
-              id="title-wrapper"
-            >
-              <div class="editable-container">
-                <h1
-                  id="prompt-title"
-                  class="prompt-title"
-                  contenteditable="true"
-                ></h1>
-              </div>
-            </div>
+            ></h1>
 
+                       
             <div class="main-buttons">
+                           
               <button id="btn-copy" class="btn-outline">
-                <img src="assets/icon-copy.svg" alt="Copiar" class="icon" />
-                <span class="text">Copiar</span>
+                               
+                <img src="assets/icon-copy.svg" alt="Copiar" class="icon" />    
+                            <span class="text">Copiar</span>
               </button>
               <button id="btn-save" class="btn-primary">Salvar</button>
             </div>
           </div>
 
           <div
+            id="prompt-content"
+            class="prompt-content is-empty"
+            contenteditable="true"
             data-placeholder="Conteúdo do prompt"
-            class="editable-wrapper is-empty"
-            id="content-wrapper"
-          >
-            <div
-              id="prompt-content"
-              class="prompt-content"
-              contenteditable="true"
-            ></div>
-          </div>
+          ></div>
+
+                 
         </div>
+             
       </main>
+         
     </div>
+       
     <script src="script.js"></script>
+     
   </body>
 </html>
