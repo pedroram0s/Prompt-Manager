@@ -53,7 +53,6 @@ body {
   overflow: hidden;
 }
 
-/* --- Sidebar (Desktop & Mobile Base) --- */
 .sidebar {
   width: 400px;
   height: 100vh;
@@ -216,7 +215,6 @@ body {
   background: var(--color-alert-800);
 }
 
-/* --- Main Content --- */
 .main {
   flex: 1;
   display: flex;
@@ -241,7 +239,7 @@ body {
   justify-content: space-between;
   gap: 16px;
   width: 100%;
-  flex-wrap: nowrap; /* Impede quebra de linha no header principal */
+  flex-wrap: nowrap;
 }
 
 .main-buttons {
@@ -250,14 +248,11 @@ body {
   flex-shrink: 0;
 }
 
-/* --- Editable & Placeholder (CORREÇÃO DE SOBREPOSIÇÃO) --- */
-
 .prompt-title,
 .prompt-content {
-  position: relative; /* ESSENCIAL para posicionamento do placeholder */
+  position: relative;
   outline: none;
   padding: 0;
-  line-height: 1.2;
 }
 
 .prompt-title {
@@ -266,10 +261,9 @@ body {
   color: #fff;
   min-height: 40px;
   line-height: 1.2;
-  /* Espaçamento para o ícone de relâmpago no desktop */
   padding-left: 42px;
-  flex-grow: 1; /* Permite que o título ocupe o espaço restante */
-  min-width: 0; /* Permite o encolhimento correto em flex */
+  flex-grow: 1;
+  min-width: 0;
 }
 
 .prompt-content {
@@ -279,11 +273,15 @@ body {
   min-height: 32px;
 }
 
-/* Placeholder usando ::before (agora no elemento de input) */
+.prompt-title[contenteditable="true"]:focus,
+.prompt-content[contenteditable="true"]:focus {
+  background: transparent;
+}
+
 .prompt-title::before,
 .prompt-content::before {
   content: attr(data-placeholder);
-  position: absolute; /* POSICIONAMENTO ABSOLUTO PARA EVITAR SOBREPOSIÇÃO */
+  position: absolute;
   top: 0;
   left: 0;
   color: var(--color-placeholder);
@@ -292,7 +290,6 @@ body {
   width: 100%;
 }
 
-/* Mostra o Placeholder se estiver VAZIO */
 .prompt-title.is-empty::before,
 .prompt-content.is-empty::before {
   opacity: 1;
@@ -302,7 +299,7 @@ body {
   font-size: 32px;
   font-weight: 600;
   line-height: 1.2;
-  left: 42px; /* Alinha o placeholder com o padding do título */
+  left: 42px;
   padding-right: 42px;
   white-space: nowrap;
   overflow: hidden;
@@ -313,9 +310,11 @@ body {
   font-size: 16px;
   line-height: 1.6;
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Ícone de Relâmpago ⚡ (quando há conteúdo, apenas desktop) */
 .prompt-title:not(.is-empty)::before {
   content: "⚡";
   position: absolute;
@@ -332,7 +331,6 @@ body {
   height: 20px;
 }
 
-/* --- Buttons & Toggles --- */
 .btn-outline {
   display: flex;
   align-items: center;
@@ -398,16 +396,11 @@ body {
   border-radius: 4px;
 }
 
-/* VISIBILIDADE DO OPEN-TOGGLE (REGRAS GERAIS E DESKTOP) */
 .sidebar.is-collapsed + .main ~ .open-toggle {
   display: flex;
 }
 
-/* --- MEDIA QUERIES (Aparelhos Menores) --- */
-
-/* 950px - Tablet/Mobile (Layout) */
 @media (max-width: 950px) {
-  /* SIDEBAR: Deve ser fixa e sobrepor o conteúdo */
   .sidebar {
     position: fixed;
     transform: translateX(-100%);
@@ -415,14 +408,12 @@ body {
     max-width: 350px;
     z-index: 1001;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-    border-right: none;
   }
 
   .sidebar:not(.is-collapsed) {
     transform: translateX(0);
   }
 
-  /* OPEN-TOGGLE: Ajustes de visibilidade para mobile */
   .open-toggle {
     display: flex;
     z-index: 1000;
@@ -433,7 +424,6 @@ body {
     display: none;
   }
 
-  /* MAIN: Ajusta o padding */
   .main {
     padding-left: 32px;
     padding-right: 32px;
@@ -445,23 +435,20 @@ body {
     max-width: 100%;
   }
 
-  /* CORREÇÃO MOBILE: Remove o ícone e padding */
   .prompt-title {
-    padding-left: 0; /* Remove padding extra no mobile */
-    min-height: 38px;
+    padding-left: 0;
   }
 
   .prompt-title.is-empty::before {
-    left: 0; /* Alinha o placeholder com a borda */
+    left: 0;
     padding-right: 0;
   }
 
   .prompt-title:not(.is-empty)::before {
-    content: none; /* Remove o ícone de relâmpago no mobile */
+    content: none;
   }
 }
 
-/* 600px - Mobile (Estética fina) */
 @media (max-width: 600px) {
   .sidebar {
     max-width: 280px;
@@ -476,7 +463,6 @@ body {
     left: 20px;
   }
 
-  /* Botões e Cabeçalho: Stack (empilhamento) vertical */
   .main-header {
     flex-direction: column;
     align-items: flex-start;
@@ -493,7 +479,6 @@ body {
     justify-content: center;
   }
 
-  /* Placeholder menor para título em telas pequenas */
   .prompt-title.is-empty::before {
     font-size: 28px;
   }
