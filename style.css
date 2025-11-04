@@ -42,7 +42,7 @@ button {
 
 body {
   background-color: var(--color-gray-900);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .app {
@@ -84,12 +84,6 @@ body {
 
 .logo {
   height: 24px;
-}
-
-.sidebar-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-right: auto;
 }
 
 .sidebar-content {
@@ -261,7 +255,6 @@ body {
   color: #fff;
   min-height: 40px;
   line-height: 1.2;
-  padding-left: 42px;
   flex-grow: 1;
   min-width: 0;
 }
@@ -299,8 +292,6 @@ body {
   font-size: 32px;
   font-weight: 600;
   line-height: 1.2;
-  left: 42px;
-  padding-right: 42px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -313,17 +304,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.prompt-title:not(.is-empty)::before {
-  content: "⚡";
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 1;
-  color: #fff;
-  font-size: 32px;
-  line-height: 1.2;
 }
 
 .icon {
@@ -398,88 +378,4 @@ body {
 
 .sidebar.is-collapsed + .main ~ .open-toggle {
   display: flex;
-}
-
-@media (max-width: 950px) {
-  .sidebar {
-    position: fixed;
-    transform: translateX(-100%);
-    width: 80%;
-    max-width: 350px;
-    z-index: 1001;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-  }
-
-  .sidebar:not(.is-collapsed) {
-    transform: translateX(0);
-  }
-
-  .open-toggle {
-    display: flex;
-    z-index: 1000;
-    background-color: transparent;
-  }
-
-  .sidebar:not(.is-collapsed) + .main ~ .open-toggle {
-    display: none;
-  }
-
-  .main {
-    padding-left: 32px;
-    padding-right: 32px;
-    justify-content: flex-start;
-  }
-
-  .main-content-wrapper {
-    margin: 0;
-    max-width: 100%;
-  }
-
-  .prompt-title {
-    padding-left: 0;
-  }
-
-  .prompt-title.is-empty::before {
-    left: 0;
-    padding-right: 0;
-  }
-
-  .prompt-title:not(.is-empty)::before {
-    content: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .sidebar {
-    max-width: 280px;
-  }
-
-  .main {
-    padding: 20px;
-  }
-
-  .open-toggle {
-    top: 20px;
-    left: 20px;
-  }
-
-  .main-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  .main-buttons {
-    width: 100%;
-    justify-content: space-between;
-  }
-  .btn-outline,
-  .btn-primary {
-    flex: 1;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .prompt-title.is-empty::before {
-    font-size: 28px;
-  }
 }

@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     promptContent: document.getElementById("prompt-content"),
     btnOpen: document.getElementById("btn-open"),
     btnCollapse: document.getElementById("btn-collapse"),
-    sidebar: document.querySelector(".sidebar"),
+    sidebar: document.getElementById("sidebar"),
     btnCopy: document.getElementById("btn-copy"),
     btnSave: document.getElementById("btn-save"),
     promptList: document.getElementById("prompt-list"),
@@ -114,7 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function toggleSidebar() {
     if (!sidebar) return
-    sidebar.classList.toggle("is-collapsed")
+    const isNowCollapsed = sidebar.classList.toggle("is-collapsed")
+
+    if (isNowCollapsed) {
+      btnOpen.style.display = "flex"
+    } else {
+      btnOpen.style.display = "none"
+    }
   }
 
   function renderPromptList(promptsToRender = state.prompts) {
@@ -180,13 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       updateEditableState(promptTitle)
       updateEditableState(promptContent)
-
-      if (
-        window.innerWidth <= 950 &&
-        !sidebar.classList.contains("is-collapsed")
-      ) {
-        toggleSidebar()
-      }
     } else if (promptId === null) {
       clearEditor()
     }
@@ -343,9 +342,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadStateFromStorage()
     attachEventListeners()
 
-    const isDesktop = window.matchMedia("(min-width: 951px)").matches
     if (sidebar) {
-      sidebar.classList.toggle("is-collapsed", !isDesktop)
+      sidebar.classList.remove("is-collapsed")
+    }
+    if (btnOpen) {
+      btnOpen.style.display = "none"
     }
 
     renderPromptList()
