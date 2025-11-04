@@ -1,36 +1,22 @@
 :root {
   --color-white: #ffffff;
-
   --color-accent-600: #4b6397;
-
   --color-accent-500: #767eab;
-
   --color-primary-600: #4863f7;
-
   --color-alert-600: #ff5c5c;
-
   --color-alert-800: rgba(225, 92, 92, 0.08);
-
   --color-gray-900: #0d0d0d;
-
   --color-gray-800: #111111;
-
   --color-gray-700: #1a1a1a;
-
   --color-placeholder: #505050;
-
   --color-gray-200: #242424;
-
   --color-gray-100: #2c2727;
-
   --main-padding-x-desktop: 100px;
 }
 
 * {
   margin: 0;
-
   padding: 0;
-
   box-sizing: border-box;
 }
 
@@ -44,7 +30,6 @@
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-gray-100);
-
   border-radius: 4px;
 }
 
@@ -52,196 +37,137 @@ body,
 input,
 button {
   font-family: "Inter", Arial, Helvetica, sans-serif;
-
   color: var(--color-white);
 }
 
 body {
   background-color: var(--color-gray-900);
-
   overflow-x: hidden;
 }
 
 .app {
   display: flex;
-
   height: 100vh;
-
   width: 100vw;
-
   position: relative;
-
   overflow: hidden;
 }
 
-/* --- Sidebar --- */
-
+/* --- Sidebar (Desktop & Mobile Base) --- */
 .sidebar {
   width: 400px;
-
   height: 100vh;
-
   display: flex;
-
   flex-direction: column;
-
   padding: 32px;
-
   background-color: var(--color-gray-800);
-
   border-right: 0.5px solid var(--color-gray-700);
-
-  transition: transform 0.3s ease, width 0.3s ease;
-
+  transition: transform 0.3s ease;
   flex-shrink: 0;
+  position: relative;
+  left: 0;
+  top: 0;
+  z-index: 999;
 }
 
 .sidebar.is-collapsed {
-  width: 0;
-
-  padding: 0;
-
-  border: none;
-
-  overflow: hidden;
-
   transform: translateX(-100%);
+  position: absolute; /* Para desktop, tira do fluxo do documento */
 }
 
 .sidebar-header {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   margin-bottom: 20px;
+  gap: 10px;
 }
 
 .logo {
   height: 24px;
 }
 
+.sidebar-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: auto;
+}
+
 .sidebar-content {
   display: flex;
-
   flex-direction: column;
-
   gap: 20px;
-
   overflow-y: auto;
-
   flex-grow: 1;
 }
 
 .search-container {
   width: 100%;
-
   position: relative;
 }
 
 .search-input {
   background: var(--color-gray-700);
-
   height: 44px;
-
   width: 100%;
-
   border: 1px solid var(--color-gray-700);
-
   outline: none;
-
   color: var(--color-white);
-
   font-size: 16px;
-
   border-radius: 6px;
-
   background-image: url("assets/search.svg");
-
   background-repeat: no-repeat;
-
   background-position: 16px center;
-
   background-size: 20px;
-
   padding: 0 16px 0 44px;
 }
-
 .search-input::placeholder {
   color: #9ca3af;
 }
 
 .search-divider {
   height: 1.5px;
-
   width: 100%;
-
   background: var(--color-gray-700);
-
   margin-top: 8px;
 }
 
 .btn-new-prompt {
   width: 100%;
-
   background: var(--color-accent-600);
-
   color: var(--color-white);
-
   border: none;
-
   border-radius: 8px;
-
   padding: 12px 0;
-
   font-size: 16px;
-
   font-weight: 600;
-
   cursor: pointer;
-
   margin-top: 4px;
-
   transition: background 0.2s;
 }
-
 .btn-new-prompt:hover {
   background: var(--color-accent-500);
 }
 
 .prompt-list {
   list-style: none;
-
   display: flex;
-
   flex-direction: column;
-
   gap: 10px;
-
   padding: 0;
 }
 
 .prompt-item {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 12px;
-
   cursor: pointer;
-
   padding: 12px;
-
   border-radius: 8px;
-
   transition: background-color 0.2s;
-
   background-color: transparent;
 }
-
 .prompt-item:hover,
 .prompt-item.is-selected {
   background-color: var(--color-gray-700);
@@ -249,306 +175,230 @@ body {
 
 .prompt-item-content {
   display: flex;
-
   flex-direction: column;
-
   gap: 4px;
-
   min-width: 0;
-
   flex: 1;
 }
 
 .prompt-item-title {
   font-size: 16px;
-
   font-weight: 600;
-
   color: #ffffff;
-
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
 
 .prompt-item-description {
   font-size: 14px;
-
   color: #6b7280;
-
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
 
 .btn-icon {
   background: none;
-
   border: none;
-
   padding: 0;
-
   cursor: pointer;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   border-radius: 4px;
-
   transition: background 0.2s;
-
   height: 32px;
-
   width: 32px;
-
   flex-shrink: 0;
 }
-
 .btn-icon:hover {
   background: var(--color-alert-800);
 }
 
 /* --- Main Content --- */
-
 .main {
   flex: 1;
-
   display: flex;
-
   justify-content: center;
-
   align-items: flex-start;
-
   padding: 62px var(--main-padding-x-desktop);
-
   overflow-y: auto;
 }
 
 .main-content-wrapper {
   max-width: 950px;
-
   width: 100%;
-
   display: flex;
-
   flex-direction: column;
-
   gap: 32px;
+  margin: 0 auto;
 }
 
 .main-header {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 16px;
-
   width: 100%;
-
   flex-wrap: wrap;
 }
 
 .main-buttons {
   display: flex;
-
   gap: 16px;
-
   flex-shrink: 0;
 }
 
-/* --- Editable & Placeholder --- */
-
+/* --- Editable & Placeholder (CORREÇÃO DE SOBREPOSIÇÃO) --- */
 .editable-wrapper {
   position: relative;
-
   flex-grow: 1;
-
   min-width: 0;
 }
 
-.editable-wrapper::before {
-  content: attr(data-placeholder);
-
-  position: absolute;
-
-  top: 0;
-
-  left: 0;
-
-  color: var(--color-placeholder);
-
-  pointer-events: none;
-
-  opacity: 0;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  width: 100%;
-}
-
-.editable-wrapper.is-empty::before {
-  opacity: 1;
-}
-
-#title-wrapper.is-empty::before {
-  font-size: 32px;
-
-  font-weight: 600;
-
+.prompt-title,
+.prompt-content {
+  position: relative;
+  outline: none;
+  padding: 0;
   line-height: 1.2;
-}
-
-#content-wrapper.is-empty::before {
-  font-size: 16px;
-
-  line-height: 1.6;
-
-  font-weight: 400;
 }
 
 .prompt-title {
   font-size: 32px;
-
   font-weight: 600;
-
   color: #fff;
-
-  outline: none;
-
-  padding: 0;
-
   min-height: 40px;
-
   line-height: 1.2;
-}
-
-.prompt-title[contenteditable="true"]:focus {
-  background: transparent;
+  /* Garante que o texto comece após o ícone de relâmpago, se houver */
+  padding-left: 42px;
 }
 
 .prompt-content {
   font-size: 16px;
-
   color: #fff;
-
-  outline: none;
-
   line-height: 1.6;
-
   min-height: 32px;
 }
 
+.prompt-title[contenteditable="true"]:focus,
 .prompt-content[contenteditable="true"]:focus {
   background: transparent;
 }
 
+/* Placeholder usando ::before nos elementos filhos */
+.prompt-title::before,
+.prompt-content::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--color-placeholder);
+  pointer-events: none;
+  opacity: 0;
+  width: 100%;
+}
+
+.prompt-title.is-empty::before,
+.prompt-content.is-empty::before {
+  opacity: 1;
+}
+
+.prompt-title.is-empty::before {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  left: 42px; /* Move o placeholder para começar após o espaço do ícone */
+  padding-right: 42px; /* Adiciona padding para não sobrepor */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prompt-content.is-empty::before {
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ícone de Relâmpago ⚡ (quando há conteúdo) */
+.prompt-title:not(.is-empty)::before {
+  content: "⚡";
+  margin-right: 10px;
+  display: inline-block;
+  font-weight: 400;
+  position: absolute; /* Usamos ABSOLUTE para não afetar o layout, mas mantendo-o visível */
+  left: 0;
+  top: 0;
+  opacity: 1;
+  color: #fff;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
 .icon {
   width: 20px;
-
   height: 20px;
 }
 
 /* --- Buttons & Toggles --- */
-
 .btn-outline {
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   background: transparent;
-
   border: 0.5px solid var(--color-gray-700);
-
   color: #fff;
-
   padding: 8px 24px;
-
   border-radius: 8px;
-
   transition: background-color 0.2s;
-
   cursor: pointer;
 }
-
 .btn-outline:hover {
   background: var(--color-gray-700);
-
   color: #fff;
 }
 
 .btn-primary {
   background: var(--color-primary-600);
-
   color: #fff;
-
   border: none;
-
   padding: 8px 28px;
-
   border-radius: 8px;
-
   cursor: pointer;
-
   transition: background 0.2s;
 }
-
 .btn-primary:hover {
   background: #394de0;
 }
 
 .icon-button {
   padding: 0;
-
   border: none;
-
   background: transparent;
-
   cursor: pointer;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   height: 24px;
-
   width: 24px;
 }
 
 .open-toggle {
   display: none;
-
   position: fixed;
-
   top: 32px;
-
   left: 32px;
-
   z-index: 1000;
-
   background-color: var(--color-gray-900);
-
   border-radius: 4px;
-
   padding: 4px;
+  transition: background 0.2s;
 }
-
 .open-toggle:hover {
   background: var(--color-gray-700);
 }
@@ -556,73 +406,77 @@ body {
 .close-toggle {
   padding: 4px;
 }
-
 .close-toggle:hover {
   background: var(--color-gray-700);
-
   border-radius: 4px;
 }
 
-/* --- MEDIA QUERIES --- */
+/* VISIBILIDADE DO OPEN-TOGGLE (REGRAS GERAIS E DESKTOP) */
+.sidebar.is-collapsed + .main ~ .open-toggle {
+  display: flex;
+}
 
-/* 950px - Tablet */
+/* --- MEDIA QUERIES (Aparelhos Menores) --- */
 
+/* 950px - Tablet/Mobile (Layout) */
 @media (max-width: 950px) {
+  /* SIDEBAR: Deve ser fixa e sobrepor o conteúdo */
   .sidebar {
     position: fixed;
-
-    top: 0;
-
-    left: 0;
-
-    height: 100vh;
-
+    transform: translateX(-100%);
     width: 80%;
-
     max-width: 350px;
-
-    transform: translateX(-100%);
-
     z-index: 1001;
-
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    border-right: none;
   }
 
-  .sidebar.is-collapsed {
-    transform: translateX(-100%);
-
-    width: 80%; /* Mantém a largura ao se esconder para a transição */
-
-    padding: 32px; /* Mantém o padding para a transição */
-
-    border: none;
+  .sidebar:not(.is-collapsed) {
+    transform: translateX(0);
   }
 
+  /* OPEN-TOGGLE: Ajustes de visibilidade para mobile */
   .open-toggle {
     display: flex;
-
     z-index: 1000;
-
-    background-color: var(--color-gray-900); /* Restaura o fundo padrão */
+    background-color: transparent;
   }
 
+  .sidebar:not(.is-collapsed) + .main ~ .open-toggle {
+    display: none;
+  }
+
+  /* MAIN: Ajusta o padding para que o conteúdo não fique muito espremido */
   .main {
     padding-left: 32px;
-
     padding-right: 32px;
-
     justify-content: flex-start;
   }
 
   .main-content-wrapper {
     margin: 0;
-
     max-width: 100%;
+  }
+
+  /* CORREÇÃO DE PLACEHOLDER EM TELAS MENORES */
+  .prompt-title {
+    padding-left: 0; /* Remove padding extra no mobile */
+    min-height: 38px;
+  }
+
+  .prompt-title.is-empty::before {
+    left: 0; /* Alinha o placeholder com a borda */
+    padding-right: 0;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .prompt-title:not(.is-empty)::before {
+    content: none; /* Remove o ícone de relâmpago no mobile */
   }
 }
 
-/* 600px - Mobile */
-
+/* 600px - Mobile (Estética fina) */
 @media (max-width: 600px) {
   .sidebar {
     max-width: 280px;
@@ -630,42 +484,32 @@ body {
 
   .main {
     padding: 20px;
-
-    justify-content: flex-start;
   }
 
   .open-toggle {
     top: 20px;
-
     left: 20px;
-
-    background-color: transparent; /* Fundo transparente no mobile */
   }
 
+  /* Botões e Cabeçalho: Stack (empilhamento) vertical */
   .main-header {
     flex-direction: column;
-
     align-items: flex-start;
-
     gap: 20px;
   }
-
   .main-buttons {
     width: 100%;
-
     justify-content: space-between;
   }
-
   .btn-outline,
   .btn-primary {
     flex: 1;
-
     text-align: center;
-
     justify-content: center;
   }
 
-  #title-wrapper.is-empty::before {
+  /* Placeholder menor para título em telas pequenas */
+  .prompt-title.is-empty::before {
     font-size: 28px;
   }
 }
